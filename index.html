@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>秋招智能投递助手 · 作品集演示</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#17365d;--navy2:#1f4a80;--gold:#c9a227;--bg:#f3f5f8;--card:#fff;--line:#e3e8ef;--text:#1d2733;--muted:#7a8698;--green:#1f9d61;--amber:#c9861e;--red:#cf3f3f}
+body{font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.7}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.hero{background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;padding:52px 0 44px}
+.hero h1{font-size:30px;letter-spacing:1px}
+.hero .sub{margin-top:10px;font-size:15px;opacity:.92}
+.hero .tags{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px}
+.hero .tag{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:4px 12px;border-radius:20px;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:-26px 0 34px;position:relative;z-index:2}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:center;box-shadow:0 4px 14px rgba(20,35,55,.08)}
+.stat b{font-size:26px;color:var(--navy2);display:block}
+.stat span{font-size:12px;color:var(--muted)}
+section{margin-bottom:44px}
+h2{font-size:21px;color:var(--navy);margin-bottom:6px}
+.sec-sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+.feats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.feat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.feat .ico{font-size:24px}
+.feat h3{font-size:15px;color:var(--navy);margin:8px 0 6px}
+.feat p{font-size:12.5px;color:var(--muted)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.toolbar input{flex:1;min-width:220px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit;background:#fff}
+.toolbar input:focus{outline:none;border-color:var(--navy2)}
+.chip{border:1px solid var(--line);background:#fff;padding:7px 16px;border-radius:20px;font-size:13px;cursor:pointer;font-family:inherit;color:var(--text)}
+.chip.active{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+.job-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:820px){.job-grid,.feats,.stats{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+.job-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:0 1px 3px rgba(20,35,55,.05);display:flex;flex-direction:column;gap:8px}
+.jc-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.jc-top h4{font-size:15px;color:var(--navy);line-height:1.4}
+.score{flex-shrink:0;font-size:14px;font-weight:700;border-radius:8px;padding:2px 10px}
+.score.high{background:#e3f6ec;color:var(--green)}
+.score.mid{background:#fdf0dc;color:var(--amber)}
+.score.low{background:#eef0f3;color:var(--muted)}
+.jc-company{font-size:13px;color:var(--text)}
+.badge{font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600;margin-right:6px;white-space:nowrap}
+.badge.soe{background:#e8eff8;color:var(--navy2)}
+.badge.bigtech{background:#e9f3ff;color:#1d6fd1}
+.badge.other{background:#eef0f3;color:var(--muted)}
+.jc-loc{font-size:12px;color:var(--muted)}
+.kw-row{display:flex;flex-wrap:wrap;gap:4px}
+.kw{font-size:11px;color:var(--navy2);background:#f0f4fa;border-radius:5px;padding:2px 7px}
+.benefits{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:6px 8px;background:#fafbfd;border:1px dashed #e2e6ee;border-radius:8px;font-size:12px}
+.b-salary{font-size:13px;color:var(--navy2);font-weight:600}
+.b-days{background:#e3f6ec;color:var(--green);padding:2px 7px;border-radius:5px;font-weight:600}
+.b-ins{background:#e8eff8;color:var(--navy2);padding:2px 7px;border-radius:5px;font-weight:600}
+.b-sub{background:#f3ecfc;color:#7a4fd1;padding:2px 7px;border-radius:5px;font-weight:600}
+.grade{margin-left:auto;font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;color:#fff;white-space:nowrap}
+.grade.g-优{background:var(--green)}
+.grade.g-良{background:#2f7fd1}
+.grade.g-中{background:var(--amber)}
+.grade.g-差{background:var(--muted)}
+.grade.g-未知{background:#c3c9d4}
+.jd{font-size:12.5px;color:#49576b}
+.jc-meta{font-size:11.5px;color:var(--muted)}
+.jc-meta a{color:var(--navy2);text-decoration:none}
+.jc-meta a:hover{text-decoration:underline}
+.demo-note{font-size:12px;color:var(--muted);margin-top:14px}
+.empty{padding:40px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:12px}
+.pipeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:820px){.pipeline{grid-template-columns:1fr}}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center;position:relative}
+.stage .ico{font-size:22px}
+.stage b{display:block;color:var(--navy);margin-top:4px;font-size:13px}
+.stage span{font-size:11px;color:var(--muted)}
+.arch{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:820px){.arch{grid-template-columns:1fr}}
+.arch .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px}
+.arch h3{font-size:14px;color:var(--navy);margin-bottom:8px}
+.arch li{font-size:12.5px;color:#49576b;margin-left:18px}
+.flow{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;overflow-x:auto}
+.flow .frow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12px}
+.flow .fbox{background:#f0f4fa;border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-weight:600;color:var(--navy2)}
+.flow .arrow{color:var(--muted)}
+footer{background:var(--navy);color:#c9d4e3;padding:26px 0 34px;font-size:12.5px}
+footer a{color:#fff}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>🎓 秋招智能投递助手</h1>
+    <p class="sub">面向 2027 届毕业生的个人项目：AI 自动找岗 · 按 JD 定制简历 · 福利识别与评级 · 投递跟踪</p>
+    <div class="tags">
+      <span class="tag">Node.js + Express</span>
+      <span class="tag">DeepSeek 联网搜索</span>
+      <span class="tag">AI Agent</span>
+      <span class="tag">原生前端</span>
+      <span class="tag">本地隐私优先</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="stats" id="stats"></div>
+
+  <section>
+    <h2>为什么做这个</h2>
+    <p class="sec-sub">2027 届秋招季，投递真实痛点 → 用 AI Agent 把「找岗 → 匹配 → 定制材料 → 跟踪」串成闭环</p>
+    <div class="feats">
+      <div class="feat"><div class="ico">🌐</div><h3>AI 多轮联网找岗</h3><p>11 轮定向搜索，优先 30 个官方/招聘渠道，返回岗位+投递入口，自动去重合并近似岗位</p></div>
+      <div class="feat"><div class="ico">📊</div><h3>岗位匹配打分</h3><p>按 公司类型/关键词/学历/城市 四维 0-100 打分，央国企优先，不用再刷几百条 JD</p></div>
+      <div class="feat"><div class="ico">🎁</div><h3>福利识别与评级</h3><p>自动识别 薪资/双休/险种/补贴，并按「五险一金+双休+补贴」规则评 优/良/中/差</p></div>
+      <div class="feat"><div class="ico">📝</div><h3>按 JD 定制投递材料</h3><p>一个岗位一份定制简历、自我评价、网申答案、自我介绍、投递指引</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>真实运行效果 · 岗位搜索结果</h2>
+    <p class="sec-sub">下方为 AI 实际搜索并整理的 <b id="countNote"></b>（数据来自本地真实运行结果，可搜索/筛选）</p>
+    <div class="toolbar">
+      <input id="q" placeholder="🔍 搜索岗位 / 公司 / 关键词…">
+      <button class="chip active" data-f="all">全部</button>
+      <button class="chip" data-f="soe">央企/国企</button>
+      <button class="chip" data-f="bigtech">大厂</button>
+      <button class="chip" data-f="high">高分 ≥80</button>
+      <button class="chip" data-f="优">福利优</button>
+    </div>
+    <div class="job-grid" id="board"></div>
+    <p class="demo-note">* 数据为 AI 联网检索结果，薪资/福利为公开信息汇总，投递前请以官网为准。岗位卡上的「投递入口」为官方链接。</p>
+  </section>
+
+  <section>
+    <h2>投递工作流</h2>
+    <p class="sec-sub">从找岗到结果的完整闭环，每个岗位的进度在看板里实时跟踪</p>
+    <div class="pipeline">
+      <div class="stage"><div class="ico">🔍</div><b>找岗</b><span>AI 搜索 + 打分</span></div>
+      <div class="stage"><div class="ico">👀</div><b>确认</b><span>卡片确认/跳过</span></div>
+      <div class="stage"><div class="ico">📝</div><b>生成材料</b><span>按 JD 定制</span></div>
+      <div class="stage"><div class="ico">📮</div><b>投递</b><span>指引+手动提交</span></div>
+      <div class="stage"><div class="ico">🎯</div><b>结果</b><span>笔试/面试/Offer</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>技术架构</h2>
+    <p class="sec-sub">本地服务 + 网页工作台，数据只在本地，不上传第三方</p>
+    <div class="arch">
+      <div class="card">
+        <h3>🔧 技术栈</h3>
+        <ul>
+          <li>后端：Node.js + Express，绑定 127.0.0.1</li>
+          <li>AI：DeepSeek Responses API（deepseek-v4-flash），内置 web_search 联网搜索</li>
+          <li>前端：原生 HTML/CSS/JS 单页工作台，无构建步骤</li>
+          <li>存储：本地 JSON 文件（数据/岗位/材料/设置）</li>
+          <li>投递：每岗定制简历(.doc)下载 + 逐站投递指引，提交由用户手动完成</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>⚙️ 模块划分</h3>
+        <ul>
+          <li>llm.js — DeepSeek 封装（联网找岗/定制材料/稳定解析 JSON）</li>
+          <li>jobSearch.js — 多轮搜索 → 打分 → 模糊去重 → 入库（核心）</li>
+          <li>tailoring.js — 按 JD 生成定制简历/自我评价/网申答案</li>
+          <li>store.js — JSON 文件读写；routes.js — REST 接口</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>我做了什么（项目亮点）</h2>
+    <div class="arch">
+      <div class="card">
+        <h3>💡 关键设计</h3>
+        <ul>
+          <li>11 轮定向联网搜索，优先 30 个官方/招聘平台，返回真实投递入口</li>
+          <li>0-100 匹配打分：公司类型 40 + 关键词 30 + 学历 10 + 城市 20</li>
+          <li>福利抽取与评级：识别薪资/双休/险种/补贴，按规则评 优/良/中/差</li>
+          <li>模糊去重：规范化公司名 + 岗位词重叠判断，63 个近似岗位合并到 41 个不重不漏</li>
+          <li>LLM 输出不稳定时自动回退重试，保证 JSON 解析成功率</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📈 结果</h3>
+        <ul>
+          <li>真实运行：整理出 41 个有效岗位，覆盖字节跳动、岚图汽车、中建八局文旅等</li>
+          <li>20 个岗位福利达「优」（五险一金 + 双休 + 补贴齐全）</li>
+          <li>央国企 / 大厂岗位占比 ≈ 83%，符合「央国企优先，其次大厂」的偏好</li>
+          <li>全部数据本地存储，AI 只在本地账号下调用，隐私可控</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    秋招智能投递助手 · 个人项目作品集演示 &nbsp;|&nbsp; 数据为本地真实运行结果（2026-08 更新）<br>
+    技术栈：Node.js / Express / DeepSeek API / 原生前端 &nbsp;·&nbsp; 完整代码见 <a href="#">GitHub 仓库</a>（发布后填入链接）
+  </div>
+</footer>
+
+<script>
+var JOBS = [{"title":"运营类岗位（内容策略运营/用户运营/增长策略运营）2027届校园招聘","company":"北京字节跳动科技有限公司","location":"北京、上海、深圳、杭州、广州等","platform":"字节跳动校园招聘官网","url":"https://jobs.bytedance.com","deadline":"2027-05-31（全年滚动）","jdSummary":"面向2027届毕业生的内容运营、用户运营、增长策略运营等岗位，八大职类开放投递，部分实习岗提供转正机会","requirement":"本科","keywordsMatched":["内容运营","用户增长","用户运营","数据分析","新媒体运营","电商运营"],"id":"msq9epra2960bf","companyType":"bigtech","score":85,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:43:59.206Z","salary":"16-22K·15薪（运营/产品/市场/职能应届生月薪约16k-22k，年终奖约3-6个月）","workDays":"双休","insurance":"六险一金","subsidies":["房补","餐补","住房补贴"],"benefitsNotes":"提供免费三餐、租房补贴、年终绩效奖金、带薪年假/全薪病假/搬家假/家庭关爱假等特色假期、商业医疗保险、弹性工作及免费健身房。","benefitsScore":94,"benefitsGrade":"优","enrichedAt":"2026-08-12T16:27:36.710Z"},{"title":"用户增长/增长营销岗位（面向2027届，可转正）","company":"字节跳动","location":"北京/上海","platform":"公司官网校招页（字节跳动校招）","url":"https://job.bytedance.com/campus","deadline":"未知","jdSummary":"负责抖音等产品的达人营销与用户增长拉新拉活，面向2026年9月-2027年8月毕业的2027届学生，为符合要求的同学提供转正机会。","requirement":"本科及以上","keywordsMatched":["用户增长","用户运营","数据分析"],"salary":"未知","workDays":"双休","insurance":"六险一金","subsidies":["房补","餐补"],"id":"msriq6rulszi40","companyType":"bigtech","score":76,"benefitsScore":84,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:52:37.194Z","benefitsNotes":"年终绩效奖金、项目专项激励、免费三餐、无限零食饮品、健身房、加班免费打车、工区通勤班车、补充商业医疗保险、带薪年假、全薪病假、搬家假、家庭关爱假","enrichedAt":"2026-08-13T13:11:43.052Z"},{"title":"营销管培生/品牌传播/新媒体运营","company":"岚图汽车科技有限公司（东风汽车集团）","location":"北京（另覆盖广州/深圳/上海）","platform":"岚图汽车招聘官网","url":"https://www.voyah.com","deadline":"未知（信息有效期至2026-10-13）","jdSummary":"央企东风旗下高端新能源品牌2027届校招，含营销管培生、品牌传播、新媒体中心、用户体验等岗位","requirement":"本科及以上（2026.9-2027.8毕业）","keywordsMatched":["市场营销","新媒体运营","品牌运营","用户运营","综合管理"],"id":"msq9dupjt10ows","companyType":"unknown","score":68,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:43:18.967Z","salary":"10.5K-15K/月（另有年终奖）","workDays":"未知","insurance":"六险一金","subsidies":["餐补","交通补贴"],"benefitsNotes":"另有年终奖、带薪年假、免费公寓、免费班车、购车优惠、免费三餐等福利","benefitsScore":60,"benefitsGrade":"中","enrichedAt":"2026-08-12T16:26:15.769Z"},{"title":"文旅运营/文旅研策（文旅公司校招）","company":"中建八局文旅博览投资发展有限公司","location":"全国（总部南京，辐射上海/浙江等）","platform":"中建八局招聘官网","url":"https://job.cscec8b.com.cn/recruitment/job/detail/id/2763/","deadline":"未知","jdSummary":"央企中国建筑旗下唯一文旅投建营平台2027届校招，从事文旅研策、文旅运营、投资开发等岗位","requirement":"未知","keywordsMatched":["文旅营销","品牌运营","综合管理"],"id":"msq9dupjhzlzca","companyType":"soe","score":86,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:43:18.967Z","salary":"10-12.5K/月","workDays":"未知","insurance":"六险一金","subsidies":["交通补贴","餐补"],"benefitsNotes":"公司实行为六险三金（含商业保险、补充公积金、企业年金），并享有超长带薪年假、探亲假、免费食宿、节日福利、生日福利、健康体检等","benefitsScore":60,"benefitsGrade":"中","enrichedAt":"2026-08-12T16:26:33.712Z"},{"title":"27届校招提前批（数据运营岗/品牌企划岗·管培生金融+文旅）","company":"广州华旅成就商业有限公司","location":"广州","platform":"中山大学就业网/实习僧","url":"https://career.sysu.edu.cn/campus/view/id/996402","deadline":"未知","jdSummary":"文旅集团版块招募数据运营、品牌企划等岗位，轮岗培养储备管理干部，覆盖景区运营、电商平台运营与金融+文旅融合业务。","requirement":"本科","keywordsMatched":["文旅营销","品牌运营","数据分析","用户运营","数据运营"],"id":"msq9hyf9j0ewge","companyType":"unknown","score":75,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:46:30.405Z","salary":"4-7K·13薪（管培生金融+文旅，部分渠道显示5.5-7千·13薪）","workDays":"双休","insurance":"六险一金","subsidies":[],"benefitsNotes":"年终绩效奖金丰厚、带薪年假、节日礼品、生日福利、定期体检、工会活动及定期团建","benefitsScore":64,"benefitsGrade":"中","enrichedAt":"2026-08-12T16:45:31.683Z"},{"title":"运营方向（产品/内容/电商/用户运营）2027届校园招聘","company":"京东集团","location":"北京、上海、广州、深圳、杭州等","platform":"京东校招官网","url":"https://campus.jd.com","deadline":"2026-11-30","jdSummary":"2027届校园招聘开放产品、运营、设计等方向，涵盖电商运营、内容运营、用户增长、数据分析等全链路业务岗位","requirement":"本科","keywordsMatched":["电商运营","内容运营","用户增长","数据分析","用户运营"],"id":"msq9epr9zuscf3","companyType":"bigtech","score":85,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:43:59.205Z","salary":"7K-12K/月（运营及基层岗位综合月薪，具体由面试定级）","workDays":"未知","insurance":"六险一金","subsidies":["房补","餐补","交通补贴"],"benefitsNotes":"行业天花板级薪酬，全员配备房补/免费公寓；含年终奖、季度/年度绩效奖金、带薪年假、节日福利、京东商城电子福利券、员工内购、免费班车、年度体检、安居计划等。","benefitsScore":70,"benefitsGrade":"良","enrichedAt":"2026-08-12T16:27:15.235Z"},{"title":"运营方向（JDS-新星计划）","company":"京东集团","location":"北京/上海/广州/深圳/杭州","platform":"京东校招官网 campus.jd.com","url":"https://campus.jd.com","deadline":"未知","jdSummary":"面向2027届毕业生的综合运营岗，覆盖采销/运营/产品方向，负责电商平台运营及业务增长","requirement":"本科及以上","keywordsMatched":["电商运营","数字化运营"],"id":"msq9io5i3rh67o","companyType":"bigtech","score":69,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:47:03.750Z","salary":"15K-20K·16薪","workDays":"双休","insurance":"六险一金","subsidies":["餐补"],"benefitsNotes":"16薪年终奖、带薪年假、安居计划、福利券、补充医疗保险、免费班车、定期体检等","benefitsScore":74,"benefitsGrade":"优","enrichedAt":"2026-08-12T16:45:53.454Z"},{"title":"市场与销售/供应链方向（管培生及应届生）2027届秋季校园招聘","company":"联想集团","location":"北京、上海、深圳、杭州、广州等20+城市","platform":"联想校招官网","url":"https://talent.lenovo.com.cn","deadline":"2026-11-13","jdSummary":"开放市场与销售、供应链、产品与项目、职能等方向，管培生项目提供轮岗历练与高管一对一指导","requirement":"本科","keywordsMatched":["市场营销","品牌运营","供应链运营","综合管理"],"id":"msq9eprau9nbtb","companyType":"unknown","score":75,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:43:59.206Z","salary":"10K-15K/月（应届生约10000-15000元/月，管培生Global Future Leaders约30万/年）","workDays":"双休","insurance":"六险一金","subsidies":["房补","餐补","交通补贴"],"benefitsNotes":"企业年金、入职即享15天年假+12天全薪病假、员工购股、内购福利、子女奖学金、不打卡灵活办公","benefitsScore":94,"benefitsGrade":"优","enrichedAt":"2026-08-12T16:27:53.043Z"},{"title":"市场运营类岗位（产品运营/营销策划/客户运营）2027届校园招聘","company":"中国移动通信集团有限公司","location":"北京、上海、广州、深圳、杭州等全国","platform":"中国移动招聘官网","url":"https://job.10086.cn","deadline":"未知","jdSummary":"市场运营类岗位招录体量稳定，覆盖产品运营、营销策划、渠道管理、客户服务支撑等，专业门槛宽松","requirement":"本科","keywordsMatched":["市场分析","数字化运营","数据分析","市场营销","用户运营","综合管理"],"id":"msq9epra2snwb5","companyType":"soe","score":93,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:43:59.206Z","salary":"6-10K","workDays":"双休","insurance":"五险一金","subsidies":["餐补","交通补贴","住房补贴"],"benefitsNotes":"另有企业年金、补充医疗保险、带薪年假、年终奖金、节日福利、健康体检及员工食堂等","benefitsScore":92,"benefitsGrade":"优","enrichedAt":"2026-08-13T13:12:03.163Z"},{"title":"数字化产品运营/市场产数类岗位2027届校园招聘","company":"中国电信集团有限公司","location":"北京、上海、广州、深圳、杭州等全国","platform":"中国电信招聘官网","url":"https://job.chinatelecom.com.cn","deadline":"未知","jdSummary":"市场产数类招录数字化产品运营、政企解决方案经理、智慧项目策划等岗位，基层区县分公司常年扩招","requirement":"本科","keywordsMatched":["数字化运营","市场分析","数据分析","市场营销"],"id":"msq9epra03v807","companyType":"soe","score":86,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:43:59.206Z","salary":"市场产数/产品运营类年薪约8-15万","workDays":"双休","insurance":"六险二金","subsidies":["餐补","交通补贴","住房补贴"],"benefitsNotes":"享受带薪年假、企业年金、补充医疗保险、年终奖、节日慰问及员工宿舍等福利","benefitsScore":70,"benefitsGrade":"良","enrichedAt":"2026-08-12T16:28:43.723Z"},{"title":"2027届统筹校园招聘（综合行政/政企服务类岗位）","company":"中国人民保险集团股份有限公司","location":"全国（含北京、上海、广州、深圳、杭州）","platform":"人保招聘官网（国聘/24365同步发布）","url":"https://picc.zhiye.com/","deadline":"2027-04-25","jdSummary":"集团及8家成员公司统筹招聘，含综合行政、政企服务等多类岗位，工作地点遍布全国，梯级志愿可申报2个岗位。","requirement":"本科","keywordsMatched":["综合管理","市场分析"],"id":"msq9hyf8dryg1k","companyType":"soe","score":79,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:46:30.404Z","salary":"8K-16K（综合行政岗8-12K、政企服务类9-16K，以深圳地区岗位为例）","workDays":"双休","insurance":"六险二金","subsidies":["餐补","交通补贴","住房补贴"],"benefitsNotes":"六险二金含补充医疗保险与企业年金，另有年终奖、带薪年假、节日福利、定期体检、租房补贴等","benefitsScore":94,"benefitsGrade":"优","enrichedAt":"2026-08-12T16:29:15.569Z"},{"title":"2027届应届生招聘（营销运营类）","company":"阿里巴巴（淘宝闪购事业部）","location":"上海/杭州/北京","platform":"阿里校园招聘官网","url":"https://talent.alibaba.com/campus","deadline":"未知","jdSummary":"面向2027届毕业生（毕业时间2026.11-2027.10），招聘AI产品运营、用户运营、商品运营、整合营销等营销运营类岗位。","requirement":"本科","keywordsMatched":["用户运营","电商运营","市场营销","数字化运营","数据分析"],"id":"msq9hyf9twf8jo","companyType":"bigtech","score":76,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:46:30.405Z","salary":"15000及以上/月·约16薪","workDays":"未知","insurance":"五险一金","subsidies":["餐补","房补"],"benefitsNotes":"每年约16薪，另含补充商业医疗保险、带薪年假、节日礼金等福利；实习期有异地住房补贴/往返交通报销","benefitsScore":58,"benefitsGrade":"中","enrichedAt":"2026-08-12T16:44:48.019Z"},{"title":"用户运营/商品运营/整合营销专员","company":"阿里巴巴（淘宝闪购）","location":"上海/杭州/北京","platform":"阿里巴巴校园招聘网申系统","url":"https://lzpu.bysjy.com.cn/detail/online?id=3537936","deadline":"2026-10-04","jdSummary":"营销运营类岗位，负责AI产品运营、用户运营、商品运营及整合营销，推动平台用户与商品增长","requirement":"本科及以上","keywordsMatched":["用户运营","电商运营","用户增长","内容运营"],"id":"msq9io5jcx09gw","companyType":"bigtech","score":83,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:47:03.751Z","salary":"未知","workDays":"双休","insurance":"五险一金","subsidies":["餐补","住房补贴","交通补贴"],"benefitsNotes":"年终奖、带薪年假、股票期权、弹性工作","benefitsScore":92,"benefitsGrade":"优","enrichedAt":"2026-08-12T16:46:30.320Z"},{"title":"运营类（用户增长/市场营销/数据分析）","company":"阿里巴巴集团","location":"北京/上海/杭州/深圳","platform":"阿里巴巴校园招聘官网","url":"https://campus-talent.alibaba.com","deadline":"未知（招满即止）","jdSummary":"面向2026.11-2027.10毕业生的2027届应届生招聘，含运营、市场、数据、产品等岗位类别","requirement":"本科","keywordsMatched":["用户增长","市场营销","数据分析","内容运营"],"salary":"约 10-15K·15薪（校招运营参考，1年以下平均约1.3万/月）","workDays":"双休","insurance":"六险一金（五险一金+公司商业保险）","subsidies":["房补","餐补","路补","交通补贴"],"id":"msrio2bif5vzgo","companyType":"bigtech","score":83,"benefitsScore":94,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:50:58.110Z","benefitsNotes":"年终奖、带薪年假、陪伴假、路途假、免费晚餐夜宵、年度体检、商业保险、住房补贴、异地搬迁交通补贴、iHome无息置业借贷","enrichedAt":"2026-08-13T13:12:18.703Z"},{"title":"电商业务运营管培生（店铺运营方向）","company":"杭州认养一头牛生物科技有限公司","location":"杭州","platform":"浙江大学就业信息网","url":"https://www.career.zju.edu.cn/jyxt/sczp/zpztgl/ckZpgwXq.zf?zpxxbh=4C05E1254A848BD3E0653A68DD0E9B18","deadline":"未知","jdSummary":"参与天猫/京东/抖音等平台精细化运营与电商轮岗学习，培养通盘生意思维，2年成长为基层管理人员。","requirement":"本科","keywordsMatched":["电商运营","数据分析"],"id":"msq9hyf9gujuj9","companyType":"unknown","score":61,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:46:30.405Z","salary":"7-12K","workDays":"双休","insurance":"六险一金","subsidies":["餐补","交通补贴"],"benefitsNotes":"带薪年假、年终奖、绩效奖金、年度体检、年节福利等","benefitsScore":84,"benefitsGrade":"优","enrichedAt":"2026-08-12T16:45:14.648Z"},{"title":"运营管培生/商品运营管培生","company":"拼多多集团-PDD","location":"上海","platform":"拼多多校招官网（提前批）","url":"https://career.smbu.edu.cn/detail/online?id=3534260","deadline":"2026-08-23","jdSummary":"运营方向管培生，含商品运营、用户体验运营等方向，负责平台商家/商品/用户运营","requirement":"本科及以上","keywordsMatched":["电商运营","用户运营","用户增长","数据分析","数字化运营"],"id":"msq9io5jdjlld4","companyType":"bigtech","score":76,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:47:03.751Z","salary":"1.2-1.6万·16薪","workDays":"单休","insurance":"五险一金","subsidies":[],"benefitsNotes":"全年16薪，提供免费一日三餐及水果饮料，有年终奖/绩效奖金，调薪机会多，试用期薪资不打折","benefitsScore":35,"benefitsGrade":"差","enrichedAt":"2026-08-12T16:46:48.921Z"},{"title":"文旅酒店管理类岗位（酒店运营/文旅招商/会展策划）","company":"中国融通资产管理集团（融通旅业）","location":"全国（含北京/上海/广州/深圳/杭州）","platform":"融通集团校招官网 job.crtc-hr.com","url":"https://job.crtc-hr.com","deadline":"未知（秋招网申9月上旬至11月中旬）","jdSummary":"央企文旅酒店板块运营岗，负责酒店运营、文旅园区运营、客户招商及会展策划","requirement":"本科","keywordsMatched":["文旅营销","品牌运营","市场营销"],"id":"msq9io5j2s1qh3","companyType":"soe","score":86,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:47:03.751Z","salary":"月薪7-12K（本科年薪9-13万、硕士13-17万/年）","workDays":"双休（酒店岗位做五休二、每天8小时）","insurance":"五险一金","subsidies":["餐补","交通补贴","住房补贴"],"benefitsNotes":"提供食宿/包吃住，带薪年假、年终奖、节日福利、人才津贴、健康体检等","benefitsScore":92,"benefitsGrade":"优","enrichedAt":"2026-08-12T16:47:12.438Z"},{"title":"集团管培生/子企业通用岗位","company":"国家开发投资集团（国投集团）","location":"全国","platform":"国聘网专属主页 sdic.iguopin.com","url":"https://sdic.iguopin.com","deadline":"未知","jdSummary":"央企集团管培生及下属子企业通用管理岗，涵盖数字化运营与综合管理方向","requirement":"本科","keywordsMatched":["综合管理","数字化运营","市场营销"],"id":"msq9io5jpz0vws","companyType":"soe","score":86,"status":"pending","verified":false,"source":"search","foundAt":"2026-08-12T15:47:03.751Z","salary":"10-12K（管培生岗位，国家大学生就业服务平台显示10K-12K；部分渠道显示10500-15000元）","workDays":"双休","insurance":"六险二金（顶格缴纳五险一金+补充医疗保险+企业年金，部分岗位补充公积金）","subsidies":["房补","餐补","交通补贴"],"benefitsNotes":"提供带薪年假(10-15天起)、企业年金、补充医疗保险、通讯/高温/驻外津贴、节日及生日福利、年度免费体检等","benefitsScore":94,"benefitsGrade":"优","enrichedAt":"2026-08-12T16:47:24.954Z"},{"title":"中免运营/文旅策划岗（2027校招）","company":"中国旅游集团有限公司","location":"北京、上海、广州、深圳、杭州等多地","platform":"智联招聘（集团校招官网）","url":"https://ctg.zhaopin.com","deadline":"未知（2027届校招板块预计9月上旬上线）","jdSummary":"文旅央企中国旅游集团2027届校招，涵盖中免免税运营、文旅项目策划、数字化营销、品牌运营等岗位。","requirement":"本科","keywordsMatched":["文旅营销","市场营销","数字化运营","用户运营","品牌运营","市场分析"],"salary":"综合年薪本科约8-15万/年、硕士12-20万/年，校招月薪约12-14K；中免运营/文旅策划岗具体薪资未明确公布","workDays":"双休","insurance":"五险一金","subsidies":["餐补","交通补贴"],"id":"msrifjq88ivdqf","companyType":"soe","score":93,"benefitsScore":82,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:44:20.768Z","benefitsNotes":"带薪年假、年度体检、奖金/年终奖、员工旅游及免税优惠等员工优惠计划","enrichedAt":"2026-08-13T13:12:41.392Z"},{"title":"市场管培生","company":"中国旅游集团（中旅资本本部）","location":"北京","platform":"国聘网","url":"https://ctg.zhaopin.com","deadline":"2026年9月15日","jdSummary":"央企文旅集团市场方向管理培训生，面向应届生，轮岗培养市场运营与综合管理能力。","requirement":"本科","keywordsMatched":["市场分析","综合管理","管培生"],"salary":"未知","workDays":"双休","insurance":"五险一金","subsidies":[],"id":"msrij72mr0ejg5","companyType":"soe","score":79,"benefitsScore":62,"benefitsGrade":"中","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:47:10.990Z","benefitsNotes":"提供带薪年假、各类假期、年度体检、员工优惠计划及津贴补助等（据中国旅游集团官方校招公告）。","enrichedAt":"2026-08-13T13:13:03.433Z"},{"title":"业务运营岗","company":"中国旅游集团（中旅旅行-中国旅行社总社北京有限公司）","location":"北京","platform":"国聘网","url":"https://ctg.zhaopin.com","deadline":"2026年9月15日","jdSummary":"负责旅行社业务日常运营与综合管理，对接文旅产品、渠道与客户运营。","requirement":"本科","keywordsMatched":["用户运营","综合管理","数字化运营"],"salary":"未知","workDays":"双休","insurance":"五险一金","subsidies":["餐补","交通补贴","住房补贴"],"id":"msrij72m8kzyl4","companyType":"soe","score":86,"benefitsScore":92,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:47:10.990Z","benefitsNotes":"带薪年假、年度体检、节日礼金、绩效奖金、通讯津贴、员工旅游/酒店/免税优惠等","enrichedAt":"2026-08-13T13:13:31.054Z"},{"title":"经营分析岗","company":"中国旅游集团（中旅旅行本部）","location":"北京","platform":"国聘网","url":"https://ctg.zhaopin.com","deadline":"2026年9月15日","jdSummary":"面向文旅业务的经营数据分析与市场分析，支撑经营决策与运营优化。","requirement":"本科","keywordsMatched":["数据分析","市场分析"],"salary":"年薪约8-15万（本科），硕士约12-20万","workDays":"双休","insurance":"五险一金","subsidies":["餐补","交通补贴"],"id":"msrij72mdum9da","companyType":"soe","score":79,"benefitsScore":82,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:47:10.990Z","benefitsNotes":"带薪年假、年度体检、员工旅游/免税优惠、绩效奖金等（部分来源提及补充医疗保险和企业年金）","enrichedAt":"2026-08-13T13:13:45.012Z"},{"title":"信息化管理岗","company":"中国旅游集团（中旅投资-中旅城市运营服务有限公司）","location":"深圳","platform":"国聘网","url":"https://ctg.zhaopin.com","deadline":"2026年9月15日","jdSummary":"负责文旅城市运营业务的数字化系统建设与信息化运营管理。","requirement":"本科","keywordsMatched":["数字化运营","数据分析"],"salary":"8-12K（该公司校招储备干部应届硕士参考区间，信息化管理岗具体薪资未单独披露）","workDays":"未知","insurance":"五险一金","subsidies":["餐补","交通补贴"],"id":"msrij72ndwl4db","companyType":"soe","score":79,"benefitsScore":58,"benefitsGrade":"中","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:47:10.991Z","benefitsNotes":"官方校招提供基本工资+奖金+津补贴、五险一金、年度体检、各类带薪假期及员工优惠计划；公司另有年终奖/季度绩效、过节费、高温补贴、定期体检，并提供员工食堂及住宿。","enrichedAt":"2026-08-13T13:14:21.301Z"},{"title":"用户运营（27届校招）J11446","company":"上海收钱吧互联网科技股份有限公司","location":"上海","platform":"实习僧","url":"https://www.shixiseng.com/intern/inn_eyg5mpageofp","deadline":"2027-01-24","jdSummary":"负责校园营销方案创意与全链路落地、多场景营销方法论沉淀、多渠道推广及活动数据洞察，直接对新增用户、复购与ROI负责。","requirement":"本科","keywordsMatched":["用户运营","数据分析","市场营销"],"salary":"8-15K/月","workDays":"双休","insurance":"五险一金","subsidies":["餐补","交通补贴"],"id":"msrihj0wy2km78","companyType":"soe","score":86,"benefitsScore":82,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:45:53.168Z","benefitsNotes":"年终奖、带薪年假、节日福利、年度体检、员工旅游、导师带教、实习补贴等","enrichedAt":"2026-08-13T13:14:36.063Z"},{"title":"2027届秋招-运营类（AI产品运营）","company":"上海盒马网络科技有限公司","location":"杭州、上海","platform":"超级简历","url":"https://www.chaojijianli.com/xiaozhao/hema-2027-graduate-recruitment-hangzhou-shanghai-12249-242fdd/","deadline":"2026-10-05","jdSummary":"阿里巴巴旗下新零售平台盒马面向2027届毕业生校招，开放运营类（AI产品运营）等多类岗位，工作地点杭州/上海。","requirement":"本科","keywordsMatched":["电商运营","用户运营","数据分析"],"salary":"17500-20000（月薪）","workDays":"未知","insurance":"未知","subsidies":[],"id":"msrihj0wsqddz0","companyType":"unknown","score":68,"benefitsScore":16,"benefitsGrade":"未知","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:45:53.168Z","benefitsNotes":"","enrichedAt":"2026-08-13T13:14:54.650Z"},{"title":"内容运营（内容类岗位）","company":"上海宽娱数码科技有限公司（哔哩哔哩）","location":"上海/北京/深圳","platform":"哔哩哔哩招聘官网","url":"https://jobs.bilibili.com/campus","deadline":"2026-10-03","jdSummary":"参与B站视频、直播、电商等多元业务的内容运营工作，负责优质内容策划、社区内容生态与用户内容体验提升。","requirement":"本科","keywordsMatched":["内容运营","新媒体运营","品牌运营"],"salary":"未知","workDays":"双休","insurance":"六险一金","subsidies":["餐补","房补"],"id":"msrii2lk0i7dgi","companyType":"bigtech","score":76,"benefitsScore":84,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:46:18.536Z","benefitsNotes":"B站不996双休，年薪15-18薪，另有补充商业保险、带薪年假、节日礼金、免费加班餐/打车报销等福利","enrichedAt":"2026-08-13T13:15:20.101Z"},{"title":"运营类校招（技术类/运营类/产品类等）","company":"上海识装信息科技有限公司（得物）","location":"上海/杭州/北京/广州","platform":"得物校园招聘官网","url":"https://campus.dewu.com","deadline":"2026-09-07","jdSummary":"面向2027届毕业生开放运营类岗位，覆盖内容运营、用户运营、电商运营等方向，负责平台内容社区与全品类电商业务运营。","requirement":"本科","keywordsMatched":["内容运营","用户运营","电商运营","用户增长"],"salary":"11-16K·16薪","workDays":"双休","insurance":"五险一金","subsidies":["房补","餐补"],"id":"msrii2llwa8ei3","companyType":"bigtech","score":83,"benefitsScore":82,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:46:18.537Z","benefitsNotes":"全年16薪（固定13薪+奖金3薪）、周末加班2倍工资、6-15天带薪年假及带薪病假、晚间打车报销、免费健身房与年度体检","enrichedAt":"2026-08-13T13:15:33.806Z"},{"title":"内容运营/用户运营/商业化运营（运营类）","company":"上海合合信息科技股份有限公司（INTSIG）","location":"上海","platform":"合合信息校园招聘（郑州大学就业网转发）","url":"https://job.zzu.edu.cn/campus/view/id/1018650","deadline":"2026-10-31","jdSummary":"面向2027届毕业生开放运营类岗位，涵盖用户运营、商业化运营、内容运营、客户运营等方向，负责智能产品的内容与用户增长运营。","requirement":"本科","keywordsMatched":["内容运营","用户运营","用户增长","数据分析"],"salary":"10K-20K·13薪（校招整体范围，含运营类岗位）","workDays":"双休（周末双休，另有弹性办公）","insurance":"五险一金","subsidies":[],"id":"msrii2llfmgi9o","companyType":"unknown","score":75,"benefitsScore":62,"benefitsGrade":"中","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:46:18.537Z","benefitsNotes":"补充医疗、年度体检、带薪年假、绩效奖金与项目激励、年底双薪、免费班车、餐食供应、节日福利、落户支持","enrichedAt":"2026-08-13T13:15:50.677Z"},{"title":"产品类（产品运营/策略运营/数据分析）","company":"北京趣拿软件科技有限公司（去哪儿旅行）","location":"北京、上海","platform":"公司官网校招页","url":"https://campus.qunar.com","deadline":"招满即止","jdSummary":"面向2027届的产品运营、策略运营、数据分析岗位，负责旅行平台用户增长、数据驱动与运营策略。","requirement":"本科","keywordsMatched":["用户增长","数据分析","内容运营"],"salary":"15K及以上","workDays":"未知","insurance":"五险一金","subsidies":[],"id":"msrij72nurzqr6","companyType":"bigtech","score":76,"benefitsScore":38,"benefitsGrade":"差","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:47:10.991Z"},{"title":"国内外电商运营/零售运营培训生/跨境物流管培生","company":"拓竹科技","location":"深圳/北京/上海/杭州","platform":"拓竹校招官网（公司官网校招页）","url":"https://bambulab.jobs.feishu.cn/campus/page-yJLBmj","deadline":"招满即止","jdSummary":"伴随线下全渠道扩张，批量开放国内外电商运营、零售运营培训生、跨境物流管培生等岗位，为线下与全渠道场景储备人才。","requirement":"本科","keywordsMatched":["电商运营","供应链运营"],"salary":"10-18K/月（国内电商运营岗位，海外电商运营面议）","workDays":"双休（9:00-18:00，弹性工作制）","insurance":"六险一金","subsidies":["房补","餐补"],"id":"msrikegj06fqyk","companyType":"unknown","score":61,"benefitsScore":84,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:48:07.219Z","benefitsNotes":"超高年终激励/期权激励、免费水果饮料零食及下午茶、免费早餐、节日礼品、全薪病假、年度体检、入职即领专属3D打印机","enrichedAt":"2026-08-13T13:16:10.944Z"},{"title":"业务运营岗","company":"中国旅行社总社(北京)有限公司（中国旅游集团旗下中旅旅行）","location":"北京","platform":"国聘网","url":"https://campus.niuqizp.com/job-vYs5zaNza.html","deadline":"2026-09-15","jdSummary":"负责旅行社业务运营相关工作的统筹执行、流程优化与协同推进","requirement":"本科","keywordsMatched":["综合管理","用户运营"],"salary":"面议（该岗位薪资未公开；集团校招参考范围 6000-12000 元/月）","workDays":"未知","insurance":"五险一金","subsidies":[],"id":"msrilql9wpx8de","companyType":"soe","score":79,"benefitsScore":38,"benefitsGrade":"差","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:49:09.597Z","benefitsNotes":"提供行业竞争力薪酬，含基本工资+奖金+津贴+五险一金+年度体检+各类假期（带薪年假）+员工优惠计划，该业务运营岗另提供通讯津贴与绩效奖金。","enrichedAt":"2026-08-13T13:16:30.831Z"},{"title":"市场管培生","company":"中旅资本（本部）（中国旅游集团）","location":"北京","platform":"国聘网","url":"https://campus.niuqizp.com/job-vYs5zaNza.html","deadline":"2026-09-15","jdSummary":"以管培生身份轮岗培养，从事市场拓展、营销策划及综合经营管理","requirement":"本科","keywordsMatched":["市场营销","市场分析","综合管理"],"salary":"12-14K/月（中国旅游集团2026校招整体水平，中旅资本市场管培生具体薪资未公布）","workDays":"双休","insurance":"五险一金","subsidies":[],"id":"msrilql95zyltu","companyType":"soe","score":86,"benefitsScore":62,"benefitsGrade":"中","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:49:09.597Z","benefitsNotes":"提供带薪年假、年度体检、企业年金、员工优惠计划及节日福利等","enrichedAt":"2026-08-13T13:17:01.609Z"},{"title":"信息化管理岗","company":"中旅投资-中旅城市运营服务有限公司（中国旅游集团）","location":"深圳","platform":"国聘网","url":"https://campus.niuqizp.com/job-vYs5zaNza.html","deadline":"2026-09-15","jdSummary":"负责城市运营服务相关信息化系统建设、数据管理与数字化运营","requirement":"本科","keywordsMatched":["数字化运营","数据分析"],"salary":"未知","workDays":"未知","insurance":"五险一金","subsidies":["餐补","交通补贴"],"id":"msrilqlaa5pdo3","companyType":"soe","score":79,"benefitsScore":58,"benefitsGrade":"中","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:49:09.598Z","benefitsNotes":"有薪假期、司龄工资、高温补贴、双薪、年度绩效、季度绩效奖金、带薪年假、年终奖等","enrichedAt":"2026-08-13T13:17:25.917Z"},{"title":"营运管理培训生（2027届管培生）","company":"华润万家有限公司","location":"深圳/广州/上海/北京/杭州","platform":"华润集团招聘官网","url":"https://runjob.crc.com.cn/","deadline":"未知","jdSummary":"面向2027届毕业生的央企零售管培生，轮岗培养为营运/管理骨干，另含线上业务、智数等管培方向","requirement":"本科","keywordsMatched":["综合管理","市场营销","数字化运营","电商运营"],"salary":"5-9K·另有年终奖","workDays":"未知","insurance":"五险一金","subsidies":[],"id":"msrin06wlqm2mt","companyType":"soe","score":86,"benefitsScore":38,"benefitsGrade":"差","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:50:08.696Z"},{"title":"运营类岗位（2027届应届生招聘）","company":"阿里国际数字商业集团","location":"杭州/北京/广州/深圳","platform":"阿里国际校园官网","url":"https://aidc-jobs.alibaba.com/campus/home?lang=zh","deadline":"2026-10-05","jdSummary":"跨境电商平台运营类岗位，覆盖用户增长、电商运营等，服务全球200+国家业务，8月5日启动网申","requirement":"本科","keywordsMatched":["电商运营","用户运营","用户增长","内容运营"],"salary":"未知","workDays":"未知","insurance":"未知","subsidies":["交通补贴","餐补","住房补贴"],"id":"msrin06wiskbmg","companyType":"bigtech","score":83,"benefitsScore":46,"benefitsGrade":"中","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:50:08.696Z"},{"title":"运营管培生（商品运营/用户体验运营方向）","company":"拼多多（上海）网络科技有限公司","location":"上海","platform":"拼多多校招官网","url":"https://careers.pddglobalhr.com/campus","deadline":"2026-09-14（提前批）","jdSummary":"2027届校招提前批，运营类含商品运营管培生、运营管培生、用户体验运营管培生等方向","requirement":"本科","keywordsMatched":["电商运营","用户运营","数据分析","内容运营"],"salary":"11-17K·月薪（运营管培生上海岗，另有16薪说法）","workDays":"单休（业内普遍为11-11-6工作制）","insurance":"五险一金","subsidies":["餐补"],"id":"msrio2bi7ifeyp","companyType":"bigtech","score":83,"benefitsScore":45,"benefitsGrade":"中","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:50:58.110Z","benefitsNotes":"提供免费三餐、年终奖、绩效奖金、定期团建、免费打车及带薪年假等福利","enrichedAt":"2026-08-13T13:17:50.243Z"},{"title":"内容运营/产品运营/市场公关（2027届）","company":"上海哔哩哔哩科技有限公司","location":"上海","platform":"哔哩哔哩招聘官网","url":"https://jobs.bilibili.com/campus","deadline":"未知（网申即日起开放，招满即止）","jdSummary":"2027届秋季校园招聘8月3日启动，全序列开放，含内容运营、产品运营、市场公关、品牌市场等岗位","requirement":"本科","keywordsMatched":["内容运营","品牌运营","市场营销","用户增长"],"salary":"面议（参考：运营/内容岗约12-19K·15薪，产品运营岗约18-25K·15薪）","workDays":"双休（B站不996）","insurance":"六险一金（五险一金+补充商业医疗保险）","subsidies":["房补","餐补","交通补贴"],"id":"msrio2birt1vjt","companyType":"bigtech","score":83,"benefitsScore":94,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:50:58.110Z","benefitsNotes":"年终奖（15薪制）、带薪年假、年度体检、节假日礼包/节日礼金、免费下午茶等","enrichedAt":"2026-08-13T13:18:12.243Z"},{"title":"2027届校园招聘-运营类（含电商/供应链运营）","company":"得物App（上海识装信息科技有限公司）","location":"上海/杭州/北京/广州","platform":"得物校招官网（飞书招聘）","url":"https://poizon.jobs.feishu.cn/s/LbGVxicCDTM","deadline":"未知","jdSummary":"面向2027届应届生开放运营类、供应链类、数据分析类、风控类等多类岗位，负责电商平台各业务线的运营与增长","requirement":"本科","keywordsMatched":["电商运营","内容运营","用户增长","供应链运营"],"salary":"11-16K·16薪（运营岗，员工分享；官方校招简章未公布具体数）","workDays":"未知","insurance":"五险一金（全额缴纳）","subsidies":["房补","餐补","交通补贴"],"id":"msrip8061tmwow","companyType":"bigtech","score":85,"benefitsScore":68,"benefitsGrade":"中","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:51:52.134Z","benefitsNotes":"得物校招普遍提供每月1200元房补、晚餐餐补30元、下午茶/夜宵、周末加班2倍工资、晚间打车报销、6-15天带薪年假及带薪病假、年终奖、免费健身房与年度体检等。","enrichedAt":"2026-08-13T13:18:42.737Z"},{"title":"市场类岗位（2027校园招聘，含内容运营/新媒体运营方向）","company":"腾讯科技（深圳）有限公司","location":"深圳/北京/上海/广州/成都/杭州","platform":"公司官网校招页（腾讯校招）","url":"https://join.qq.com","deadline":"2026-09-17","jdSummary":"面向2026年1月至2027年12月毕业的海内外大学生开放市场类岗位，负责产品内容生态运营、用户与品牌市场推广等工作。","requirement":"本科及以上","keywordsMatched":["内容运营","用户运营","新媒体运营","市场营销"],"salary":"15K-20K·14薪（市场类岗位月薪约15000-20000元）","workDays":"双休","insurance":"五险一金（公积金按最高12%比例缴纳，部分岗位提供补充商业保险）","subsidies":["房补","交通补贴"],"id":"msriq6ru5bb2zw","companyType":"bigtech","score":83,"benefitsScore":82,"benefitsGrade":"优","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:52:37.194Z","benefitsNotes":"校招房补北上广深每月4000元（成都2000元）按15个月发放并纳入月薪；免费三餐、带薪年假（校招入职即享15天）、年终奖及免费体检。","enrichedAt":"2026-08-13T13:19:01.665Z"},{"title":"消费者管理培训生（市场营销/电商运营方向）","company":"华为技术有限公司（华为终端BG）","location":"深圳/北京/上海/广州/武汉/成都","platform":"公司官网校招页（华为招聘）","url":"https://career.huawei.com/cn/campus-recruitment","deadline":"未知","jdSummary":"华为2027届校招终端BG岗位，面向消费者业务培养市场营销、电商销售运营、零售与品牌运营人才。","requirement":"本科及以上","keywordsMatched":["市场营销","电商运营","品牌运营"],"salary":"约15-17K·14-16薪（约21-30万/年，视城市与定级）","workDays":"未知","insurance":"六险一金（含补充商业保险）","subsidies":["房补","餐补","交通补贴"],"id":"msriq6rux6woy5","companyType":"bigtech","score":76,"benefitsScore":70,"benefitsGrade":"良","status":"pending","verified":false,"source":"search","foundAt":"2026-08-13T12:52:37.194Z","benefitsNotes":"年终奖及绩效奖金（14-16薪中含年终约2-4个月）、补充商业保险、带薪年假、年度体检、节日福利等","enrichedAt":"2026-08-13T13:19:21.544Z"},{"title":"产品运营/市场营销/经营分析（2027届校园招聘）","company":"百度在线网络技术（北京）有限公司","location":"北京/上海","platform":"百度校招官网","url":"https://talent.baidu.com","deadline":"2026-07-09至次年6月，全年开放","jdSummary":"百度2027届校招开放产品运营、市场营销、经营分析、商业分析等运营/综合岗位，面向2027届本科及以上应届生，全年可投。","requirement":"本科","keywordsMatched":["数字化运营","市场分析","市场营销","数据分析"],"salary":"校招综合约30万元/年（以官网为准）","workDays":"未知","insurance":"五险一金","subsidies":[],"id":"msrir89japsc0w","companyType":"bigtech","score":83,"benefitsScore":38,"benefitsGrade":"差","status":"confirmed","verified":false,"source":"search","foundAt":"2026-08-13T12:53:25.783Z","confirmedAt":"2026-08-13T13:24:05.292Z"}];
+var FILTER = 'all';
+
+function esc(s){return String(s==null?'':s).replace(/</g,'&lt;')}
+function fmt(sub){if(!sub||!sub.length)return '';return sub.slice(0,3).join('、')}
+
+function card(j){
+  var typeLabel = j.companyType==='soe'?'央企/国企':(j.companyType==='bigtech'?'互联网大厂':'其他');
+  var scoreCls = j.score>=80?'high':(j.score>=60?'mid':'low');
+  var grade = j.benefitsGrade||'未知';
+  var h='<div class="job-card">';
+  h+='<div class="jc-top"><h4>'+esc(j.title)+'</h4><span class="score '+scoreCls+'">'+j.score+'分</span></div>';
+  h+='<div class="jc-company"><span class="badge '+j.companyType+'">'+typeLabel+'</span>'+esc(j.company)+'</div>';
+  h+='<div class="jc-loc">📍 '+esc(j.location)+'</div>';
+  if(j.keywordsMatched&&j.keywordsMatched.length){h+='<div class="kw-row">';j.keywordsMatched.slice(0,6).forEach(function(k){h+='<span class="kw">'+esc(k)+'</span>'});h+='</div>'}
+  h+='<div class="benefits">';
+  if(j.salary&&j.salary!=='未知')h+='<span class="b-salary">💰 '+esc(j.salary)+'</span>';
+  if(j.workDays&&j.workDays!=='未知')h+='<span class="b-days">🗓 '+esc(j.workDays)+'</span>';
+  if(j.insurance&&j.insurance!=='未知')h+='<span class="b-ins">🛡 '+esc(j.insurance)+'</span>';
+  if(j.subsidies&&j.subsidies.length)h+='<span class="b-sub">🏠 '+esc(fmt(j.subsidies))+'</span>';
+  h+='<span class="grade g-'+grade+'">福利'+grade+'</span>';
+  h+='</div>';
+  if(j.jdSummary)h+='<p class="jd">'+esc(j.jdSummary)+'</p>';
+  h+='<div class="jc-meta">'+esc(j.platform||'')+' · 截止 '+esc(j.deadline||'—')+(j.url?' · <a href="'+esc(j.url)+'" target="_blank" rel="noopener">投递入口 ↗</a>':'')+'</div>';
+  h+='</div>';
+  return h;
+}
+
+function render(){
+  var q=(document.getElementById('q').value||'').trim().toLowerCase();
+  var list=JOBS.filter(function(j){
+    if(FILTER==='soe'&&j.companyType!=='soe')return false;
+    if(FILTER==='bigtech'&&j.companyType!=='bigtech')return false;
+    if(FILTER==='high'&&(j.score==null||j.score<80))return false;
+    if(FILTER==='优'&&j.benefitsGrade!=='优')return false;
+    if(q){var hay=(j.title+' '+j.company+' '+(j.keywordsMatched||[]).join(' ')+' '+(j.jdSummary||'')).toLowerCase();if(hay.indexOf(q)<0)return false;}
+    return true;
+  });
+  document.getElementById('board').innerHTML=list.length?list.map(card).join(''):'<div class="empty">没有符合条件的岗位</div>';
+  document.getElementById('countNote').textContent=list.length+' 个岗位';
+}
+function stats(){
+  var soe=0,bt=0,g1=0,g2=0,sum=0;
+  JOBS.forEach(function(j){
+    if(j.companyType==='soe')soe++;if(j.companyType==='bigtech')bt++;
+    if(j.benefitsGrade==='优')g1++;if(j.benefitsGrade==='良')g2++;
+    if(j.score!=null)sum+=j.score;
+  });
+  var avg=JOBS.length?Math.round(sum/JOBS.length):0;
+  var el=document.getElementById('stats');
+  el.innerHTML='<div class="stat"><b>'+JOBS.length+'</b><span>有效岗位</span></div>'+
+    '<div class="stat"><b>'+(soe+bt)+'</b><span>央国企+大厂岗位</span></div>'+
+    '<div class="stat"><b>'+avg+'</b><span>平均匹配分</span></div>'+
+    '<div class="stat"><b>'+g1+'</b><span>福利「优」岗位</span></div>';
+}
+document.getElementById('q').addEventListener('input',render);
+document.querySelectorAll('.chip').forEach(function(c){
+  c.addEventListener('click',function(){
+    document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('active')});
+    c.classList.add('active');FILTER=c.getAttribute('data-f');render();
+  });
+});
+stats();render();
+</script>
+</body>
+</html>

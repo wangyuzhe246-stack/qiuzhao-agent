@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>秋招智能投递助手</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">🎓</span>
+    <div>
+      <h1>秋招智能投递助手</h1>
+      <p class="tagline">AI 自动找岗 · 按 JD 定制简历 · 投递跟踪</p>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <span class="apikey-indicator" id="apikeyIndicator">API Key：未设置</span>
+  </div>
+</header>
+
+<div id="onboardBanner" class="onboard" hidden>
+  <div class="onboard-inner">
+    <b>首次使用三步：</b>
+    <span>① 到「设置」填入 DeepSeek API Key 并保存 → ② 到「我的简历」上传/粘贴你的简历 → ③ 回到「找岗位」开始搜索。</span>
+    <button id="onboardGoto" class="btn small">去设置</button>
+  </div>
+</div>
+
+<nav class="tabs">
+  <button class="tab active" data-tab="jobs">找岗位</button>
+  <button class="tab" data-tab="resume">我的简历</button>
+  <button class="tab" data-tab="profile">我的职业画像</button>
+  <button class="tab" data-tab="materials">投递材料</button>
+  <button class="tab" data-tab="track">投递跟踪</button>
+  <button class="tab" data-tab="settings">设置</button>
+</nav>
+
+<main>
+  <!-- ============ 找岗位 ============ -->
+  <section id="panel-jobs" class="panel active">
+    <div class="card search-card">
+      <div class="search-bar">
+        <button id="searchBtn" class="btn primary">🔍 开始搜索秋招岗位</button>
+        <button id="enrichBtn" class="btn gold">🎁 补充福利信息</button>
+        <button id="analyzeAllBtn" class="btn gold">⚡ 一键分析已确认岗位</button>
+        <button id="stopBtn" class="btn ghost" hidden>停止</button>
+        <div class="search-meta">
+          <div id="searchStep" class="search-step"></div>
+          <div id="searchLog" class="search-log"></div>
+        </div>
+      </div>
+    </div>
+    <div class="filter-row">
+      <button class="chip active" data-filter="all">全部 <b id="cntAll">0</b></button>
+      <button class="chip" data-filter="pending">待确认 <b id="cntPending">0</b></button>
+      <button class="chip" data-filter="confirmed">已确认 <b id="cntConfirmed">0</b></button>
+      <button class="chip" data-filter="skipped">已跳过 <b id="cntSkipped">0</b></button>
+      <button class="chip" id="sortRecChip" title="按综合岗位价值评分降序，未分析的排最后">⬇ 按推荐排序</button>
+      <span class="hint ml-auto" id="jobsHint"></span>
+    </div>
+    <div id="jobList" class="job-list"></div>
+  </section>
+
+  <!-- ============ 我的简历 ============ -->
+  <section id="panel-resume" class="panel">
+    <div class="card">
+      <h3>📄 上传或粘贴简历</h3>
+      <div class="dropzone" id="dropzone">
+        <div>拖拽 PDF / DOCX / TXT 文件到这里</div>
+        <div class="dz-sub">或 <label class="file-label">选择文件<input type="file" id="fileInput" accept=".pdf,.docx,.txt,.md" hidden></label></div>
+      </div>
+      <div class="or-divider">—— 或 ——</div>
+      <textarea id="pasteText" rows="4" placeholder="直接粘贴简历全文（文字版简历也可以）…"></textarea>
+      <div class="row">
+        <button id="pasteBtn" class="btn primary">解析粘贴的简历</button>
+        <span class="hint" id="resumeMsg"></span>
+      </div>
+    </div>
+    <div id="resumeForm" class="card" hidden></div>
+  </section>
+
+  <!-- ============ 我的职业画像 ============ -->
+  <section id="panel-profile" class="panel">
+    <div class="card">
+      <h3>🧑‍💻 我的职业画像（职业记忆库）</h3>
+      <p class="hint">画像由 AI 从你的简历 + 求职设置中提炼：职业定位、核心能力、行业经验、优势标签、成果数据、职业目标、目标岗位。它会被用于每个岗位的 JD 语义分析、匹配度评分和简历优化建议。简历更新后建议重新生成。</p>
+    </div>
+    <div id="profileForm" class="card" hidden></div>
+  </section>
+
+  <!-- ============ 投递材料 ============ -->
+  <section id="panel-materials" class="panel">
+    <div class="layout">
+      <aside class="side-card">
+        <h3>已确认岗位</h3>
+        <div id="materialsJobList" class="side-list"></div>
+      </aside>
+      <div class="main-card">
+        <div id="materialsView" class="materials-view">
+          <div class="empty-state">👈 请先在「找岗位」确认要投的岗位，再到这里生成材料</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 投递跟踪 ============ -->
+  <section id="panel-track" class="panel">
+    <div class="card">
+      <h3>📋 投递跟踪看板</h3>
+      <p class="hint">只有「已确认」的岗位会出现在这里。手动更新每个岗位的进度。</p>
+    </div>
+    <div id="trackBoard" class="track-list"></div>
+  </section>
+
+  <!-- ============ 设置 ============ -->
+  <section id="panel-settings" class="panel">
+    <div class="card">
+      <h3>🔑 DeepSeek API</h3>
+      <label>API Key
+        <input type="password" id="setApiKey" placeholder="sk-…（已设置时留空表示不修改）">
+      </label>
+      <div class="hint" id="apiKeyHint"></div>
+      <div class="row">
+        <button id="testBtn" class="btn">测试连接</button>
+        <span id="testResult" class="hint"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>📍 目标城市</h3>
+      <div id="cityChips" class="chip-row"></div>
+      <p class="hint">用于搜索岗位和匹配打分。</p>
+    </div>
+
+    <div class="card">
+      <h3>🎯 岗位关键词</h3>
+      <textarea id="setKeywords" rows="4" placeholder="每行一个关键词"></textarea>
+      <p class="hint">搜索与打分都依赖这些词：数字化运营 / 市场分析 / 综合管理 / 内容运营 / 用户增长 / 电商运营 / 文旅营销 / 用户运营…</p>
+    </div>
+
+    <div class="card">
+      <h3>👤 个人档案</h3>
+      <label>专业<input id="setMajor" placeholder="电子商务"></label>
+      <label>公司偏好<input id="setCompanyPref" placeholder="央企/国企优先，其次大厂"></label>
+    </div>
+
+    <div class="card">
+      <h3>📚 数据来源平台</h3>
+      <div id="sourceList" class="source-list"></div>
+      <p class="hint">搜索时 AI 会优先从这些官方/招聘平台找岗位与投递入口。共 6 类、30 个渠道。</p>
+    </div>
+
+    <div class="row">
+      <button id="saveSettingsBtn" class="btn primary">保存设置</button>
+      <span id="settingsMsg" class="hint"></span>
+    </div>
+  </section>
+</main>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>
