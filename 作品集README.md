@@ -3,7 +3,7 @@
 > **个人项目 · 用 AI Agent 把「找岗 → 匹配 → 定制材料 → 跟踪投递」串成一个闭环**
 > 面向 2027 届毕业生的秋招场景，由我独立设计、开发并真实使用。
 
-🔗 **在线演示（无需安装，点开即看）**：将 `demo/index.html` 部署到 GitHub Pages / Netlify 后填入链接，例如 `https://你的用户名.github.io/qiuzhao-agent/`
+🔗 **在线演示（无需安装，点开即看）**：将 `demo/index.html` 部署到 GitHub Pages / Netlify 后填入链接，例如 `https://wangyuzhe246-stack.github.io/qiuzhao-agent`
 
 ---
 
